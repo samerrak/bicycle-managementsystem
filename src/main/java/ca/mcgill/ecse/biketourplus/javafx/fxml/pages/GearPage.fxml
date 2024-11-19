@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="428.0" prefWidth="610.0" style="-fx-background-color: #7DCE13;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.mcgill.ecse.biketourplus.javafx.fxml.controllers.GearPageController">
+   <children>
+      <Label alignment="CENTER" prefHeight="40.0" prefWidth="146.0" text="Add Menu">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <GridPane>
+        <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="194.39996337890625" minWidth="10.0" prefWidth="54.800024414062506" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="194.39996337890625" minWidth="10.0" prefWidth="49.2000244140625" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="175.20003204345704" minWidth="10.0" prefWidth="130.9999755859375" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="193.600048828125" minWidth="10.0" prefWidth="146.2000244140625" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="134.4000244140625" minWidth="10.0" prefWidth="37.39997558593751" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="180.79996337890623" minWidth="10.0" prefWidth="129.8000366210938" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="180.79996337890623" minWidth="10.0" prefWidth="56.199963378906205" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints />
+            <RowConstraints maxHeight="59.19998397827149" minHeight="0.0" prefHeight="49.5" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="53.599999999999994" minHeight="10.0" prefHeight="52.79998168945312" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label alignment="CENTER" prefHeight="18.0" prefWidth="45.0" text="Name:" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
+            <Label alignment="CENTER" prefHeight="18.0" prefWidth="34.0" text="Price:" GridPane.columnIndex="4" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
+            <TextField fx:id="gearAddNameTextField" promptText="ExampleGear" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
+            <TextField fx:id="gearAddPriceTextField" prefHeight="26.0" prefWidth="149.0" promptText="10" GridPane.columnIndex="5" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
+            <Button fx:id="addGearButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#addGearClicked" prefHeight="26.0" prefWidth="146.0" style="-fx-background-color: #EAE509; -fx-border-color: black; -fx-background-radius: 5; -fx-border-radius: 5;" text="Add Gear" GridPane.columnIndex="3" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" />
+         </children>
+      </GridPane>
+      <Separator prefHeight="25.0" prefWidth="610.0" />
+      <Label alignment="CENTER" prefHeight="30.0" prefWidth="200.0" text="Update Menu">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <GridPane alignment="TOP_CENTER">
+        <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="132.60003662109375" minWidth="10.0" prefWidth="49.5" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="153.5" minWidth="10.0" prefWidth="109.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="168.0" minWidth="10.0" prefWidth="135.5" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="169.5999755859375" minWidth="10.0" prefWidth="129.5" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="187.7999755859375" minWidth="10.0" prefWidth="136.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="168.79998779296875" minWidth="10.0" prefWidth="57.80003662109374" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints maxHeight="56.800009155273436" minHeight="10.0" prefHeight="24.0000244140625" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="56.800009155273436" minHeight="10.0" prefHeight="35.1999755859375" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="60.8" minHeight="10.0" prefHeight="46.20001525878905" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="39.99999084472657" minHeight="0.0" prefHeight="33.59998168945313" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label alignment="CENTER" prefHeight="18.0" prefWidth="93.0" text="Update Name:" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" />
+            <Label alignment="CENTER" prefHeight="18.0" prefWidth="122.0" text="Update Price:" GridPane.columnIndex="3" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" />
+            <TextField fx:id="gearUpdatePriceTextField" prefHeight="25.0" prefWidth="122.0" promptText="10" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+            <TextField fx:id="gearUpdateNameTextField" prefHeight="25.0" prefWidth="129.0" promptText="ExampleGear" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" />
+            <Button fx:id="updateGearButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#updateGearClicked" prefHeight="26.0" prefWidth="114.0" style="-fx-background-color: #FFA500; -fx-border-color: black; -fx-background-radius: 5; -fx-border-radius: 5;" text="Update Gear" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" />
+            <Button fx:id="removeGearButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#removeGearClicked" prefHeight="26.0" prefWidth="114.0" style="-fx-background-color: #FF0000; -fx-border-color: black; -fx-background-radius: 5; -fx-border-radius: 5;" text="Remove Gear" GridPane.columnIndex="4" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" />
+            <Label alignment="CENTER" prefHeight="20.0" prefWidth="155.0" text="Select an existing Gear:" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <ChoiceBox fx:id="updateGearChoiceBox" maxWidth="1.7976931348623157E308" prefHeight="24.0" prefWidth="127.0" style="-fx-background-color: #5BB318; -fx-border-color: black;" GridPane.columnIndex="3" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
+         </children>
+      </GridPane>
+      <Separator prefHeight="39.0" prefWidth="610.0" />
+   </children>
+</VBox>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="401.0" prefWidth="600.0" style="-fx-background-color: #7DCE13;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ca.mcgill.ecse.biketourplus.javafx.fxml.controllers.ModificationPageController">
+   <children>
+      <Label alignment="CENTER" prefHeight="160.0" prefWidth="600.0" text="Manage Season">
+         <font>
+            <Font name="System Bold" size="36.0" />
+         </font>
+      </Label>
+      <Separator prefHeight="17.0" prefWidth="600.0" />
+      <GridPane alignment="CENTER" prefHeight="110.0" prefWidth="600.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="195.20001220703125" minWidth="10.0" prefWidth="142.200048828125" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="264.4000244140625" minWidth="10.0" prefWidth="118.39997558593748" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="142.40001220703124" minWidth="8.5999755859375" prefWidth="81.60002441406249" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="114.0" minWidth="10.0" prefWidth="111.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="154.1999633789062" minWidth="10.0" prefWidth="86.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="92.4000244140625" minWidth="10.0" prefWidth="62.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="21.599981689453124" minHeight="10.0" prefHeight="18.4" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="41.60001220703124" minHeight="10.0" prefHeight="34.39999999999999" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label alignment="CENTER_RIGHT" prefHeight="18.0" prefWidth="134.0" text="Start Date:" GridPane.hgrow="ALWAYS" />
+            <Label alignment="CENTER_RIGHT" prefHeight="18.0" prefWidth="105.0" text="Number of Weeks:" GridPane.columnIndex="3" GridPane.hgrow="ALWAYS" />
+            <DatePicker fx:id="startSeasonDatePicker" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" />
+            <Label alignment="CENTER_RIGHT" prefHeight="18.0" prefWidth="134.0" text="Guide Price (Per week):" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" />
+            <TextField fx:id="updateGuideTextField" prefHeight="26.0" prefWidth="258.0" promptText="Price Per Week" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" />
+            <TextField fx:id="numberOfWeeksTextField" GridPane.columnIndex="4" />
+         </children>
+      </GridPane>
+      <GridPane>
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="276.79998779296875" minWidth="10.0" prefWidth="263.60003662109375" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="195.20001220703125" minWidth="10.0" prefWidth="63.59996337890624" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="271.79998779296875" minWidth="10.0" prefWidth="271.79998779296875" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+      </GridPane>
+      <GridPane>
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Button fx:id="seasonButton" maxWidth="-Infinity" mnemonicParsing="false" onAction="#seasonButtonClicked" prefHeight="26.0" prefWidth="642.0" style="-fx-background-color: #EAE509; -fx-border-color: black; -fx-background-radius: 5; -fx-border-radius: 5;" text="Confirm Changes" GridPane.columnIndex="1" />
+         </children>
+      </GridPane>
+   </children>
+</VBox>

@@ -1,0 +1,267 @@
+class Participant {
+    /**
+    * State Machine implemented for the Participant stateful class of the BikeTourPlus system
+    * @author Karl Bridi & Emilien Taisne & Samer Abdelkarim
+    */
+    Status {
+        NotAssigned {
+            assign(Guide guide)[canBeAssigned(guide)]/ {
+                assignment(guide);
+            }-> Assigned;
+            cancelTrip() -> Cancelled;
+            payForTrip(String authorizationCode)/ {
+                rejectPayment("The participant has not been assigned to their tour");
+            }-> NotAssigned;
+            finishBikeTour()/ {
+                rejectFinishBikeTour("Cannot finish a tour for a participant who has not started their tour");
+            } -> NotAssigned;
+        }
+        Assigned {
+            payForTrip(String authorizationCode)[validAuthorizationCode(authorizationCode)]/ {
+                updateAuthorizationCode(authorizationCode);
+            }-> Paid;
+            payForTrip(String authorizationCode)[!validAuthorizationCode(authorizationCode)]/ {
+                rejectPayment("Invalid authorization code");
+            }-> Assigned;
+            cancelTrip() -> Cancelled;
+            startBikeTour() -> Banned;
+            finishBikeTour()/ {
+                rejectFinishBikeTour("Cannot finish a tour for a participant who has not started their tour");
+            } -> Assigned;
+        }
+        Paid {
+            startBikeTour() -> Started;
+            cancelTrip()/ {
+                refundParticipant(50);
+            } -> Cancelled;
+            payForTrip(String authorizationCode)/ {
+                rejectPayment("The participant has already paid for their tour");
+            }-> Paid;
+            finishBikeTour()/ {
+                rejectFinishBikeTour("Cannot finish a tour for a participant who has not started their tour");
+            } -> Paid;
+        }
+        Started {
+            finishBikeTour() -> Finished;
+            cancelTrip() / {
+                refundParticipant(10);
+            } -> Cancelled;
+            payForTrip(String authorizationCode) / {
+                rejectPayment("The participant has already paid for their tour");
+            }-> Started;
+            startBikeTour() / {
+                rejectStartBikeTour("Cannot start tour because the participant has already started their tour");
+            } -> Started;
+        }
+        Finished {
+            payForTrip(String authorizationCode) / {
+                rejectPayment("The participant has already paid for their tour");
+            }-> Finished;
+            startBikeTour() / {
+                rejectStartBikeTour("Cannot start tour because the participant has finished their tour");
+            } -> Finished;
+            finishBikeTour() / {
+                rejectFinishBikeTour("Cannot finish tour because the participant has already finished their tour");
+            } -> Finished;
+            cancelTrip() / {
+                rejectCancellation("Cannot cancel tour because the participant has finished their tour");
+            } -> Finished;
+        }
+        Cancelled {
+            payForTrip(String authorizationCode) / {
+                rejectPayment("Cannot pay for tour because the participant has cancelled their tour");
+            }-> Cancelled;
+            startBikeTour() / {
+                rejectStartBikeTour("Cannot start tour because the participant has cancelled their tour");
+            } -> Cancelled;
+            finishBikeTour() / {
+                rejectFinishBikeTour("Cannot finish tour because the participant has cancelled their tour");
+            } -> Cancelled;
+            cancelTrip() / {
+                rejectCancellation("Cannot cancel tour because the participant has already cancelled their tour");
+            } -> Cancelled;
+        }
+        Banned {
+            payForTrip(String authorizationCode) / {
+                rejectPayment("Cannot pay for tour because the participant is banned");
+            }-> Banned;
+            startBikeTour() / {
+                rejectStartBikeTour("Cannot start tour because the participant is banned");
+            } -> Banned;
+            finishBikeTour() / {
+                rejectFinishBikeTour("Cannot finish tour because the participant is banned");
+            } -> Banned;
+            cancelTrip() / {
+                rejectCancellation("Cannot cancel tour because the participant is banned");
+            } -> Banned;
+        }
+    }
+
+    /**
+    * Method implementing a guard condition for the assign event
+    * 
+    * @author Karl
+    */
+    private boolean canBeAssigned(Guide guide){
+        List<BikeTour> bikeTours = guide.getBikeTours();
+
+        //Case where the guide has no BikeTours
+        BikeTour bikeTour;
+        if(bikeTours.isEmpty()){
+            return true;
+        }
+
+        //Case where the guide already has at least 1 biketour
+        for (BikeTour aBikeTour : bikeTours){
+            int startWeek = aBikeTour.getStartWeek();
+            int endWeek = aBikeTour.getEndWeek();
+            if(((endWeek - startWeek + 1) == getNrWeeks()) && weekAvailableFrom <= startWeek && weekAvailableUntil >= endWeek){
+                return true;
+            }
+        }
+
+        //Try to fit a new biketour to the guide if the participant couldn't participate in any of the already existing
+        int counter = 0;
+        boolean conflicting = false;
+        for (int i = weekAvailableFrom; i <= weekAvailableUntil; i++){
+            for(BikeTour aBikeTour : bikeTours){
+                int startWeek = aBikeTour.getStartWeek();
+                int endWeek = aBikeTour.getEndWeek();
+                if (i >= startWeek && i <= endWeek){
+                        conflicting = true;
+                }
+            }
+            if(!conflicting){
+                counter++;
+                if(counter == getNrWeeks()){
+                    return true;
+                }
+            } else{
+                counter = 0;
+            }
+            conflicting = false;
+        }
+
+        return false;
+    }
+
+    /** Method implementing the action of the assign event
+    *
+    * @author Karl Bridi
+    */
+    private void assignment(Guide guide){
+        List<BikeTour> bikeTours = guide.getBikeTours();
+
+        //Code to get the id of the next BikeTour
+        List<BikeTour> bikeToursOfSystem = bikeTourPlus.getBikeTours();
+        int nextId;
+        if(!bikeToursOfSystem.isEmpty()){
+            nextId = bikeToursOfSystem.get(bikeToursOfSystem.size() - 1).getId() + 1;
+        } else{
+            nextId = 1;
+        }
+
+        //Case where the guide has no BikeTours
+        BikeTour bikeTour;
+        if(bikeTours.isEmpty()){
+            bikeTour = new BikeTour(nextId, weekAvailableFrom, weekAvailableFrom + getNrWeeks() - 1, guide, bikeTourPlus);
+            bikeTour.addParticipant(this);
+            return;
+        }
+
+        //Case where the guide already has at least 1 biketour
+        for (BikeTour aBikeTour : bikeTours){
+            int startWeek = aBikeTour.getStartWeek();
+            int endWeek = aBikeTour.getEndWeek();
+            if(((endWeek - startWeek + 1) == getNrWeeks()) && weekAvailableFrom <= startWeek && weekAvailableUntil >= endWeek){
+                aBikeTour.addParticipant(this);
+                return;
+            }
+        }
+
+        //Try to fit a new biketour to the guide if the participant couldn't participate in any of the already existing
+        int counter = 0;
+        boolean conflicting = false;
+        for (int i = weekAvailableFrom; i <= weekAvailableUntil; i++){
+            for(BikeTour aBikeTour : bikeTours){
+                int startWeek = aBikeTour.getStartWeek();
+                int endWeek = aBikeTour.getEndWeek();
+                if (i >= startWeek && i <= endWeek){
+                        conflicting = true;
+                }
+            }
+
+            if(!conflicting){
+                counter++;
+                if(counter == getNrWeeks()){
+                    bikeTour = new BikeTour(nextId, i - counter + 1, i, guide, bikeTourPlus);
+                    bikeTour.addParticipant(this);
+                    return;
+                }
+            } else{
+                counter = 0;
+            }
+            conflicting = false;
+        }
+    }
+
+    /** Method implementing a guard condition for the payForTrip event
+    *
+    * @author Emilien Taisne
+    */
+    private boolean validAuthorizationCode(String authorizationCode) {
+        if (authorizationCode == null || authorizationCode.isEmpty()) {
+            return false;
+        }
+        return true;
+    }
+
+    /** Method implementing the action for the payForTrip event
+    *
+    * @author Emilien Taisne
+    */
+    private void updateAuthorizationCode(String authorizationCode){
+        this.authorizationCode = authorizationCode;
+    }
+
+    /** Method implementing part of the action for the payForTrip event
+    *
+    * @author Karl Bridi
+    */
+    private void rejectPayment(String errorMessage){
+        throw new RuntimeException(errorMessage);
+    }
+
+    /** Method implementing part of the action for the payForTrip event
+    *
+    * @author Emilien Taisne
+    */
+    private void refundParticipant(int percentage){
+        refundedPercentageAmount = percentage;
+    }
+
+    /** Method to implement action for the startBikeTour event
+    *
+    * @author Karl Bridi
+    */
+    private void rejectStartBikeTour(String errorMessage){
+        throw new RuntimeException(errorMessage);
+    }
+
+    /** Method to implement action for the finishBikeTour event
+    *
+    * @author Karl Bridi
+    */
+    private void rejectFinishBikeTour(String errorMessage){
+        throw new RuntimeException(errorMessage);
+    }
+
+    /** Method to implement action for the cancel event
+    *
+    * @author Karl Bridi
+    */
+    private void rejectCancellation(String errorMessage){
+        throw new RuntimeException(errorMessage);
+    }
+}
+

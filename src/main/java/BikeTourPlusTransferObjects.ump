@@ -1,0 +1,43 @@
+namespace ca.mcgill.ecse.biketourplus.controller;
+
+class TOBikeTour {
+  immutable;
+  Integer id;
+  Integer startWeek;
+  Integer endWeek;
+  guideEmail;
+  guideName;
+  Integer totalCostForGuide;
+  0..1 -> * TOParticipantCost participantCosts;
+
+  public String participantsName(List<TOParticipantCost> participantCosts){
+      List<String> participants = new ArrayList<>();
+
+      for (TOParticipantCost cost: participantCosts)
+        participants.add(cost.getParticipantEmail());
+
+      return String.join("\n", participants);
+    }
+
+   public ArrayList<String> participantsEmail(List<TOParticipantCost> participantCosts){
+      ArrayList<String> participants = new ArrayList<>();
+
+      for (TOParticipantCost cost: participantCosts)
+        participants.add(cost.getParticipantEmail());
+
+      return participants;
+    }
+
+
+}
+
+class TOParticipantCost {
+  immutable;
+  participantEmail;
+  participantName;
+  status;
+  Integer totalCostForBookableItems;
+  Integer totalCostForBikingTour;
+  authorizationCode;
+  Integer refundedPercentageAmount;
+}
